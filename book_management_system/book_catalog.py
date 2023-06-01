@@ -1,3 +1,5 @@
+# done by Jakub Suszwedyk: 6310933   and Marcell Dorko: 6326607
+
 from flask import Flask, jsonify, abort, request
 import requests
 
@@ -7,6 +9,8 @@ books = [
     {'id': 1, 'title': 'Book 1', 'author': 'Author 1', 'publication_year': '2023'},
     {'id': 2, 'title': 'Book 2', 'author': 'Author 2', 'publication_year': '2023'}
 ]
+
+INVENTORY_SERVICE = "http://localhost:3002"
 
 
 @app.route('/catalog/<int:book_id>', methods=['GET'])
@@ -30,6 +34,10 @@ def create_book():
         'author': request.json['author'],
         'publication_year': request.json['publication_year']
     }
+    try:
+        requests.post(f"{INVENTORY_SERVICE}/inventory/create", json={'book_id': new_book['id']})
+    except requests.exceptions.RequestException as e:
+        abort(500)
     books.append(new_book)
     return jsonify({'book': new_book}), 201
 
@@ -53,6 +61,8 @@ def update_book():
         abort(404)
     book_id = request.json['book_id']
     book = [book for book in books if book['id'] == book_id]
+    if len(book) == 0:
+        abort(400)
     if 'author' in request.json:
         book[0]['author'] = request.json.get('author')
 
