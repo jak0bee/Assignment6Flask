@@ -1,4 +1,4 @@
-#done by Jakub Suszwedyk: 6310933   and Marcell Dorko: 6326607
+# done by Jakub Suszwedyk: 6310933   and Marcell Dorko: 6326607
 from flask import Flask, abort, request, jsonify
 
 app = Flask(__name__)
@@ -32,8 +32,11 @@ def update_inventory():
         abort(400)
     book_id = request.json['book_id']
     item = [item for item in inventory if item['book_id'] == book_id]
+    if len(item) == 0:
+        abort(400)
     if type(request.json['quantity']) is not int:
         abort(400)
+
     item[0]['quantity'] = request.json['quantity']
     return jsonify(item)
 

@@ -61,6 +61,8 @@ def update_book():
         abort(404)
     book_id = request.json['book_id']
     book = [book for book in books if book['id'] == book_id]
+    if len(book) == 0:
+        abort(400)
     if 'author' in request.json:
         book[0]['author'] = request.json.get('author')
 
