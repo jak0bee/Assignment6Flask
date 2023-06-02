@@ -25,7 +25,9 @@ To start the services, execute the `run_services.py` Python script. This script 
 ## Unit Testing
 
 The system comes with a set of unit tests for ensuring the functionality and reliability of the individual components.
-Before executing the unit tests, ensure that all services are running as they are necessary for the correct operation of
-the tests.
+
+The files containing the unittests are in the `test` directory.
 
 Please remember that all services must be running before executing the unit tests in order for the results to be meaningful.
+
+The screenshots of the unittests being successful are in the `test_results` directory.
