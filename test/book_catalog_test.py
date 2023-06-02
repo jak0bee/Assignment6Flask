@@ -7,6 +7,10 @@ from book_management_system.catalog_service.book_catalog import app, books
 
 
 class TestBookCatalog(unittest.TestCase):
+    """
+    In order for the tests to be correct, the run_services.py script from the book_management_system package has to also be running.
+    """
+
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True
@@ -36,8 +40,7 @@ class TestBookCatalog(unittest.TestCase):
 
     def test_delete_book(self):
         response = self.app.delete('/catalog/delete', json={'book_id': 3})
-        self.assertEqual(response.json, {'result': True})
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 204)
 
     def test_delete_book_wrong_id(self):
         response = self.app.delete('/catalog/delete', json={'book_id': 4})

@@ -1,0 +1,80 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Inventory Service API
+paths:
+  /inventory:
+    get:
+      summary: Get inventory
+      responses:
+        '200':
+          description: Returns a list of books in the inventory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BookInventory'
+
+  /inventory/create:
+    post:
+      summary: Add a book to the inventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewInventoryItem'
+      responses:
+        '201':
+          description: Returns the created inventory item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookInventory'
+        '404':
+          description: Invalid request
+
+  /inventory/update:
+    put:
+      summary: Update the quantity of a book in the inventory
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateInventoryItem'
+      responses:
+        '200':
+          description: Returns the updated inventory item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookInventory'
+        '400':
+          description: Invalid request
+
+components:
+  schemas:
+    BookInventory:
+      type: object
+      properties:
+        book_id:
+          type: integer
+        quantity:
+          type: integer
+    NewInventoryItem:
+      type: object
+      properties:
+        book_id:
+          type: integer
+          description: ID of the book to add
+    UpdateInventoryItem:
+      type: object
+      properties:
+        book_id:
+          type: integer
+          description: ID of the book to update
+        quantity:
+          type: integer
+          description: New quantity of the book

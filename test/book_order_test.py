@@ -6,6 +6,10 @@ from book_management_system.order_service.book_order import app, orders
 
 
 class TestBookOrder(unittest.TestCase):
+    """
+    In order for the tests to be correct, the run_services.py script from the main packages has to also be running.
+    """
+
     def setUp(self):
         self.app = app.test_client()
         self.app.testing = True

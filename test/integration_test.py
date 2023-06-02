@@ -3,6 +3,9 @@ import requests
 
 
 class TestIntegration(unittest.TestCase):
+    """
+    In order for the tests to be correct, the run_services.py script from the main packages has to also be running.
+    """
     BASE_URL = 'http://localhost:3000'
 
     def test_create_get_delete_book(self):
@@ -17,10 +20,6 @@ class TestIntegration(unittest.TestCase):
                          {'book':
                               {'id': 3, 'title': 'Book 3', 'author': 'Author 3', 'publication_year': 2023}})
         self.assertEqual(response.status_code, 200)
-
-        # checks if the new book appeared in the inventory with quantity = 2
-        response = requests.get(f"{self.BASE_URL}/inventory")
-        # self.assertEqual(response.json()[2], {'book_id': 3, 'quantity': 2})
 
         # deletes the book
         response = requests.delete(f"{self.BASE_URL}/catalog/delete", json={'book_id': 3})

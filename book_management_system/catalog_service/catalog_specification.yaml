@@ -1,0 +1,124 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Catalog Service API
+paths:
+  /catalog/{book_id}:
+    get:
+      summary: Retrieve a book by its ID
+      parameters:
+        - name: book_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Returns a single book object
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '404':
+          description: Book not found
+
+  /catalog/create:
+    post:
+      summary: Create a new book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewBook'
+      responses:
+        '201':
+          description: Returns the created book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid request
+        '500':
+          description: Internal server error
+
+  /catalog/delete:
+    delete:
+      summary: Delete a book by its ID
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                book_id:
+                  type: integer
+      responses:
+        '204':
+          description: Book successfully deleted
+        '404':
+          description: Invalid request
+
+  /catalog/update:
+    put:
+      summary: Update a book
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateBook'
+      responses:
+        '200':
+          description: Returns the updated book
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Book'
+        '400':
+          description: Invalid request
+        '404':
+          description: Book not found
+
+components:
+  schemas:
+    Book:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        author:
+          type: string
+        publication_year:
+          type: integer
+    NewBook:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Title of the book
+        author:
+          type: string
+          description: Author of the book
+        publication_year:
+          type: integer
+          description: Year of publication
+    UpdateBook:
+      type: object
+      properties:
+        book_id:
+          type: integer
+          description: Id of the book to update
+        title:
+          type: string
+          description: New title of the book
+        author:
+          type: string
+          description: New author of the book
+        publication_year:
+          type: integer
+          description: New year of publication

@@ -1,6 +1,6 @@
 # done by Jakub Suszwedyk: 6310933   and Marcell Dorko: 6326607
 
-from flask import Flask, jsonify, abort, request
+from flask import Flask, jsonify, abort, request, make_response
 import requests
 from book_management_system.catalog_service.catalog_mock_database import books
 
@@ -48,7 +48,10 @@ def delete_book():
     if not book:
         abort(404)
     books.remove(book[0])
-    return jsonify({'result': True}), 204
+
+    response = make_response(jsonify({'result': True}))
+    response.status_code = 204
+    return response
 
 
 @app.route('/catalog/update', methods=['PUT'])
