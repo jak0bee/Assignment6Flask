@@ -9,12 +9,11 @@ import requests
 # pip install requests
 
 
-#  To run the program, you should navigate to the directory containing the Python script (let's say the script is named api_gateway.py) and execute the following command:
-# python api_gateway.py
+#  To run the program, you should navigate to the directory containing the Python script
+#  (let's say the script is named api_gateway.py) and execute the following command: python api_gateway.py
 # This will start the API gateway server on port 3000, and users can interact with it using the specified routes.
 
 app = Flask(__name__)
-
 
 # Base URLs for the microservices
 BOOK_CATALOG_SERVICE = "http://localhost:3001"
