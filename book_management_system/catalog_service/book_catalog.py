@@ -2,13 +2,9 @@
 
 from flask import Flask, jsonify, abort, request
 import requests
+from book_management_system.catalog_service.catalog_mock_database import books
 
 app = Flask(__name__)
-
-books = [
-    {'id': 1, 'title': 'Book 1', 'author': 'Author 1', 'publication_year': '2023'},
-    {'id': 2, 'title': 'Book 2', 'author': 'Author 2', 'publication_year': '2023'}
-]
 
 INVENTORY_SERVICE = "http://localhost:3002"
 
@@ -16,9 +12,9 @@ INVENTORY_SERVICE = "http://localhost:3002"
 @app.route('/catalog/<int:book_id>', methods=['GET'])
 def get_book(book_id):
     book = [book for book in books if book['id'] == book_id]
-    if len(book) == 0:
+    if not book:
         abort(404)
-    return jsonify({'book': book[0]})
+    return jsonify({'book': book[0]}), 200
 
 
 @app.route('/catalog/create', methods=['POST'])
@@ -36,7 +32,7 @@ def create_book():
     }
     try:
         requests.post(f"{INVENTORY_SERVICE}/inventory/create", json={'book_id': new_book['id']})
-    except requests.exceptions.RequestException as e:
+    except requests.exceptions.RequestException:
         abort(500)
     books.append(new_book)
     return jsonify({'book': new_book}), 201
@@ -49,10 +45,10 @@ def delete_book():
 
     book_id = request.json['book_id']
     book = [book for book in books if book['id'] == book_id]
-    if len(book) == 0:
+    if not book:
         abort(404)
     books.remove(book[0])
-    return jsonify({'result': True})
+    return jsonify({'result': True}), 204
 
 
 @app.route('/catalog/update', methods=['PUT'])
@@ -61,16 +57,18 @@ def update_book():
         abort(404)
     book_id = request.json['book_id']
     book = [book for book in books if book['id'] == book_id]
-    if len(book) == 0:
+    if not book:
         abort(400)
+
+    if 'title' in request.json:
+        book[0]['title'] = request.json.get('title')
+
     if 'author' in request.json:
         book[0]['author'] = request.json.get('author')
 
     if 'publication_year' in request.json and type(request.json['publication_year']) is int:
-        book[0]['publication'] = request.json.get('publication_year')
+        book[0]['publication_year'] = request.json.get('publication_year')
 
-    if 'title' in request.json:
-        book[0]['title'] = request.json.get('title')
     return jsonify({'book': book[0]})
 
 
