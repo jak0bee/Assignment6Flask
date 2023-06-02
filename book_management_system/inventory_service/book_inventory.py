@@ -1,4 +1,4 @@
-# done by Jakub Suszwedyk: 6310933   and Marcell Dorko: 6326607
+# by Software Engineering Assignments 55: Jakub Suszwedyk: 6310933   and Marcell Dorko: 6326607
 
 from flask import Flask, abort, request, jsonify
 from book_management_system.inventory_service.inventory_mock_database import inventory

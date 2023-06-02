@@ -1,6 +1,6 @@
 # Book Management System
 
-by Jakub Suszwedyk (i6310933) and Marcell Dorko (i6326607)
+by Software Engineering Assignments 55: Jakub Suszwedyk (i6310933) and Marcell Dorko (i6326607)
 
 ## Introduction
 
